@@ -1,23 +1,25 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Film } from "lucide-react";
 import Image from "next/image";
 import { Search } from "lucide-react";
 import { Moon } from "lucide-react";
-import { useEffect } from "react";
-import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "./_components/card";
-let Title: string = "";
-let Rating: string = "";
-let Overview: string = "";
+import { Carousel } from "@/components/ui/carousel";
+import { type } from "os";
+type Information = {
+  Title: string;
+  Rating: string;
+  Overview: string;
+};
+
 export default function Home() {
-  const [Information, setInformation] = useState({
-    Title: "",
-    Rating: "",
-    Overview: "",
-  });
+  // const [Information, setInformation] = useState({
+  //   Title: "",
+  //   Rating: "",
+  //   Overview: "",
+  // });
   const options = {
     method: "GET",
     headers: {
@@ -26,22 +28,15 @@ export default function Home() {
         "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMzk2OTBmOTgzMGNlODA0Yjc4OTRhYzFkZWY0ZjdlOSIsIm5iZiI6MTczNDk0OTM3MS43NDIsInN1YiI6IjY3NjkzOWZiYzdmMTcyMDVkMTBiMGIxMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.2r2TerxSJdZGmGVSLVDkk6nHT0NPqY4rOcxHtMNt0aE",
     },
   };
-  useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1`,
-      options
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setInformation({
-          Title: data.results[0].title,
-          Overview: data.results[0].overview,
-          Rating: data.results[0].vote_average,
-        });
-        console.log(data.results[0].overview);
-      });
-  }, []);
-
+  fetch(
+    `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1`,
+    options
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data.results);
+    });
+  // let Information = data.results;
   return (
     <div>
       <div className="bg-white w-screen h-screen">
@@ -60,17 +55,21 @@ export default function Home() {
           </div>
         </div>
         <div>
-          <img className="mt-5 w-[375px] h-[246px]" src="poster.png" alt="" />
+          <Carousel className="w-[396px] h-[]"></Carousel>
+          {/* <img className="mt-5 w-[375px] h-[246px]" src="poster.png" alt="" /> */}
         </div>
         <div className="flex justify-between">
           <div>
             Now playing:
-            <p className="text-purple-600">{Information.Title}</p>
+            <p className="text-purple-600">{Title}</p>
           </div>
-          <div>⭐️{Information.Rating}/10</div>
+          <div>⭐️{Rating}/10</div>
         </div>
-        <div>{Information.Overview}</div>
-        <Button />
+        <div>{Overview}</div>
+        <div>
+          <Button />
+        </div>
+
         <div>
           <div className="text-[24px]">
             UpcomingPlay
